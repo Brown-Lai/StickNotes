@@ -1,0 +1,42 @@
+.bg-set {
+  background-color: #010630;
+}
+
+.btn-color {
+  color: white;
+  background-color: #010630;
+}
+.btn-color:hover {
+  background-color: rgb(0, 0, 101);
+  color: rgb(255, 246, 181);
+}
+
+.profile .photo {
+  margin: 2px;
+  border-radius: 25%;
+}
+
+.image-container {
+  position: relative;
+  border-radius: 25%;
+}
+.image-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 25%;
+}
+.image-container .centered-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #040a3a;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+@media (max-width: 768px) {
+  .image-container .centered-text {
+    font-size: 20px;
+  }
+}/*# sourceMappingURL=style.css.map */

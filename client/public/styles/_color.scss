@@ -1,0 +1,12 @@
+$themeColor-blue: #010630;
+.bg-set {
+  background-color: $themeColor-blue;
+}
+.btn-color {
+  color: white;
+  background-color: $themeColor-blue;
+  &:hover {
+    background-color: rgb(0, 0, 101);
+    color: rgb(255, 246, 181);
+  }
+}
