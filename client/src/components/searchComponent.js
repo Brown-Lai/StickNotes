@@ -34,7 +34,8 @@ const SearchComponent = () => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-5">
+      <br />
       <div className="input-group mb-3 ">
         <input
           type="text"

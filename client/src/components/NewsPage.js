@@ -1,36 +1,62 @@
-import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import userFunctionService from "../services/userFunction.service";
 
-const NewsPage = () => {
-  const [fans, setFans] = useState(0);
+const NewsPage = ({ currentUser, setCurrentUser }) => {
+  let navigate = useNavigate();
+  let [currentUserData, setCurrentUserData] = useState(null);
+  let [followersData, setFollowersData] = useState([]);
 
-  // useEffect(() => {
-  //   // 模擬粉絲數增加
-  //   const interval = setInterval(() => {
-  //     setFans((prevFans) => prevFans + 1);
-  //   }, 5000);
+  useEffect(() => {
+    if (currentUser) {
+      UserData();
+    }
+  }, [currentUser]);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+  const UserData = async () => {
+    try {
+      let res = await userFunctionService.getCurrentUser();
+      setCurrentUserData(res.data);
+      // console.log("Updated currentUserData:", res.data);
 
-  // useEffect(() => {
-  //   if (fans > 0) {
-  //     toast(`你有一個新粉絲！總粉絲數: ${fans}`);
-  //   }
-  // }, [fans]);
+      if (res.data.followers) {
+        await fetchFollowersData(res.data.followers);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const fetchFollowersData = async (followers) => {
+    try {
+      const followersPromises = followers.map((followerId) =>
+        userFunctionService.getUserFromId(followerId)
+      );
+      // console.log(followers);
+
+      const followersResults = await Promise.all(followersPromises);
+      const followersData = followersResults.map((result) => result.data);
+      setFollowersData(followersData);
+      // console.log("Followers data:", followersData);
+    } catch (error) {
+      console.error("Error fetching followers data:", error);
+    }
+  };
 
   return (
-    <div className="container">
-      <ul className="list-group rounded-pill m-4">
-        <li className="list-group-item d-flex justify-content-between align-items-start">
-          <div className="ms-5 me-auto">
-            <div className="fw-bold">user</div>
-            follow u{" "}
-          </div>
-        </li>
-      </ul>
-      <ToastContainer />
+    <div className="container mt-5">
+      <br />
+
+      {followersData &&
+        followersData.map((follower, index) => (
+          <ul key={index} className="list-group rounded-pill m-4">
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-5 me-auto">
+                <div className="fw-bold">{follower.user.username}</div> 已追蹤你
+              </div>
+            </li>
+          </ul>
+        ))}
     </div>
   );
 };

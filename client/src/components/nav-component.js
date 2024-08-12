@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -9,12 +9,36 @@ import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { faAnchor } from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-modal";
+Modal.setAppElement("#root");
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   let textColor = "#FFFFFF";
+  const navigate = useNavigate();
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    navigate("/");
+  };
   const handleLogout = () => {
     AuthService.logout();
-    window.alert("登出成功，現在將您導向首頁");
+    openModal();
     setCurrentUser(null);
   };
 
@@ -29,14 +53,10 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-md navbar-light bg-info">
+      <nav className="navbar navbar-expand-md navbar-light fixed-top bg-info bg-gradient ">
         <div className="container-fluid">
-          <div className="d-flex w-auto">
-            <Link
-              className="nav-link active "
-              style={{ color: textColor }}
-              to="/"
-            >
+          <div className="d-flex w-auto ">
+            <Link className="nav-link active logo" to="/">
               Sticky
               <FontAwesomeIcon
                 icon={faNoteSticky}
@@ -157,6 +177,23 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
           </div>
         </div>
       </nav>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h5 className="mt-1">登出成功</h5>
+        <div className=" d-flex justify-content-center align-item-center">
+          <button
+            className="btn btn-info mt-2"
+            type="button"
+            onClick={closeModal}
+          >
+            確定
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

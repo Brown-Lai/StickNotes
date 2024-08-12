@@ -3,36 +3,64 @@ import { useNavigate } from "react-router-dom";
 import PostService from "../services/post.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const NewPostComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   let [content, setContent] = useState("");
+  let [alertText, setAlertText] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = (text) => {
+    setIsOpen(true);
+    setAlertText(text);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    navigate("/profile");
+  };
+
+  const notCancel = () => {
+    setIsOpen(false);
+    // navigate("/profile");
+  };
 
   const addNewPost = async () => {
     let username = currentUser.user.username;
     try {
       await PostService.newPost(username, content);
-      window.alert("便利貼新增完成，您現在將被導向到個人頁面");
-      navigate("/profile");
+      openModal("便利貼新增完成，您現在將被導向到個人頁面");
     } catch (e) {
       console.log(e);
     }
   };
 
   const cancel = () => {
-    window.confirm("確定要取消這篇貼文嗎？");
-    navigate("/profile");
+    // window.confirm("確定要取消這篇貼文嗎？");
+    openModal("確定要取消這篇貼文嗎？");
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
+      <br />
       <h1>
-        New Sticky
+        New Sticky Note
         <FontAwesomeIcon
           icon={faNoteSticky}
           style={{ margin: "3px", color: "#FFFF93" }}
         />
-        Note
       </h1>
       <div className="form-group">
         <label htmlFor="exampleforContent">內容：</label>
@@ -56,6 +84,32 @@ const NewPostComponent = ({ currentUser, setCurrentUser }) => {
         <br />
         <br />
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h5 className="mt-1">{alertText}</h5>
+        <div className=" d-flex justify-content-center align-item-center">
+          <button
+            className="btn btn-info mt-2"
+            type="button"
+            onClick={closeModal}
+          >
+            確定
+          </button>
+          {cancel && (
+            <button
+              className="btn btn-info mt-2 mx-2"
+              type="button"
+              onClick={notCancel}
+            >
+              取消
+            </button>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };

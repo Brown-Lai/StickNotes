@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import userFunctionService from "../services/userFunction.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PostCardComponent from "./PostCardComponent";
-import stickyNote from "../images/sticky-note2.png"; // 根據你的圖片路徑調整
 import {
   faNoteSticky,
   faGlasses,
@@ -16,14 +15,15 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
 
   useEffect(() => {
     if (currentUser) {
-      // localStorage.setItem("user", JSON.stringify(currentUser))
+      // // localStorage.setItem("user", JSON.stringify(currentUser))
       UserData();
     }
-  }, [currentUser]);
+  }, []);
 
   const UserData = async () => {
     let res = await userFunctionService.getCurrentUser();
     setCurrentUserData(res.data);
+    // console.log(currentUserData);
 
     // get current localStorage  user object
     let storedUser = JSON.parse(localStorage.getItem("user"));
@@ -45,72 +45,75 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
 
   return (
     <div className="container mt-5">
-      <div className="row w-100">
-        <div className="col-3 ms-0 me-3 image-container">
-          <img className="w-100 photo" src={stickyNote} alt="..." />
+      <br />
+      <br />
+      <div className="row">
+        <div className="col-2 ms-0 me-3  image-container">
+          <img
+            className="w-100 photo"
+            src="https://picsum.photos/id/103/200/200"
+            alt="..."
+          />
         </div>
-        <div className="col-8">
-          <h3>{currentUser.user.username}</h3>
+        <div className="col-9 d-flex align-items-center">
+          <div className="col-4 d-flex">
+            <div className="mx-1">
+              <FontAwesomeIcon
+                icon={faNoteSticky}
+                style={{ color: "#010630" }}
+              />
+            </div>
+            貼文:
+            <div className="p-item">{currentUser.user.post}</div>
+          </div>
+          <div className="col-4 d-flex">
+            <div className="mx-1">
+              <FontAwesomeIcon
+                icon={faFaceSmile}
+                style={{ color: "#010630" }}
+              />
+            </div>
+            粉絲:
+            <div className="p-item"> {currentUser.user.fans}</div>
+          </div>
+          <div className="col-4 d-flex">
+            <div className="mx-1">
+              <FontAwesomeIcon icon={faGlasses} style={{ color: "#010630" }} />
+            </div>
+            追蹤:
+            <div className="p-item"> {currentUser.user.follow}</div>
+          </div>
+        </div>
+        <div className="row mt-3">
+          <div>{currentUser.user.username}</div>
           <br />
           <div className="row">
-            <div className="col-4 d-flex">
-              <div className="mx-1">
-                <FontAwesomeIcon
-                  icon={faNoteSticky}
-                  style={{ color: "#010630" }}
-                />
-              </div>
-              <div className="p-item">Post: {currentUser.user.post}</div>
-            </div>
-
-            <div className="col-4 d-flex">
-              <div className="mx-1">
-                <FontAwesomeIcon
-                  icon={faFaceSmile}
-                  style={{ color: "#010630" }}
-                />
-              </div>
-              <div className="p-item">Fans: {currentUser.user.fans}</div>
-            </div>
-
-            <div className="col-4 d-flex">
-              <div className="mx-1">
-                <FontAwesomeIcon
-                  icon={faGlasses}
-                  style={{ color: "#010630" }}
-                />
-              </div>
-              <div className="p-item">Follow: {currentUser.user.follow}</div>
-            </div>
             <p className="mail mt-3">{currentUser.user.email}</p>
             <p className="description">{currentUser.user.description}</p>
-            <div className="container d-flex">
-              <button
-                onClick={handleEditProfile}
-                type="button"
-                className="btn btn-secondary ms-2"
-              >
-                編輯檔案
-              </button>
-              <button
-                onClick={handleNewPost}
-                type="button"
-                className="btn btn-secondary ms-2"
-              >
-                <FontAwesomeIcon
-                  icon={faNoteSticky}
-                  style={{ margin: "3px", color: "#FFFF93" }}
-                />
-              </button>
-            </div>
           </div>
+        </div>
+        <div className="container d-flex align-items-center justify-content-center">
+          <button
+            onClick={handleEditProfile}
+            type="button"
+            className="col-5 btn btn-light "
+          >
+            編輯檔案
+          </button>
+          <button
+            onClick={handleNewPost}
+            type="button"
+            className="col-5 btn btn-light ms-2"
+          >
+            <FontAwesomeIcon icon={faNoteSticky} style={{ color: "#F9F900" }} />
+          </button>
         </div>
       </div>
 
       {currentUser && (
         <PostCardComponent
-          currentUser={currentUser}
-          serCurrentUser={setCurrentUser}
+          currentUser={currentUserData}
+          serCurrentUser={setCurrentUserData}
         />
       )}
     </div>

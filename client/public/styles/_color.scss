@@ -1,12 +1,26 @@
-$themeColor-blue: #010630;
-.bg-set {
-  background-color: $themeColor-blue;
-}
+$themeColor-blue: #3dcaf9;
+
 .btn-color {
   color: white;
   background-color: $themeColor-blue;
   &:hover {
-    background-color: rgb(0, 0, 101);
-    color: rgb(255, 246, 181);
+    background-color: #0fa9f6;
+  }
+}
+
+.btn-light {
+  &:hover {
+    background-color: #5ddfff;
+  }
+}
+
+.rounded-3 {
+  border-radius: 30px !important;
+}
+
+.logo {
+  color: #ffff !important;
+  &:hover {
+    color: #fdff6b !important;
   }
 }

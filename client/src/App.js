@@ -51,7 +51,15 @@ function App() {
               />
             }
           ></Route>
-          <Route path="news" element={<NewsPage />}></Route>
+          <Route
+            path="news"
+            element={
+              <NewsPage
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+              />
+            }
+          ></Route>
           <Route
             path="login"
             element={

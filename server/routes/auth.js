@@ -13,8 +13,6 @@ router.get("/testAPI", (req, res) => {
   return res.send("成功連結auth route...");
 });
 
-// router.get("/", (req, res) => {});
-
 router.post("/register", async (req, res) => {
   // 確認數據是否符合規範
   let { error } = registerValidation(req.body);

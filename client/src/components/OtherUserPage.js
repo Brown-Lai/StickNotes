@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import authService from "../services/auth.service";
 import userFunctionService from "../services/userFunction.service";
+import PostCardComponent from "./PostCardComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faNoteSticky,
+  faGlasses,
+  faFaceSmile,
+} from "@fortawesome/free-solid-svg-icons";
 
 const OtherUserPage = ({ currentUser, setCurrentUser }) => {
   const { username } = useParams();
@@ -57,29 +64,82 @@ const OtherUserPage = ({ currentUser, setCurrentUser }) => {
   };
 
   return (
-    <div>
+    <div className="container rounded-3 mt-5">
       {pageUserData && currentUserData ? (
-        <div>
-          <div>
-            <h3>Profile of {pageUserData.username}</h3>
-            <p>Email: {pageUserData.email}</p>
-            <p>fans: {pageUserData.fans}</p>
-            <p>follow: {pageUserData.follow}</p>
-            <p>following: {pageUserData.following}</p>
-            <p>followers: {pageUserData.followers}</p>
-            {}
-            {!isFollowing && <button onClick={follow}>追蹤</button>}
-            {isFollowing && <button onClick={follow}>取消追蹤</button>}
+        <div className="row w-100 border-bottom p-2">
+          <div className="col-2 mt-4 ms-0 me-3 image-container">
+            <img
+              className="w-100 photo"
+              src="https://picsum.photos/id/101/200/200"
+              alt="..."
+            />
           </div>
-          <p>----------------------------------------</p>
-          <div>
-            <h3>Profile of {currentUserData.username}</h3>
-            <p>Email: {currentUserData.email}</p>
-            <p>fans: {currentUserData.fans}</p>
-            <p>follow: {currentUserData.follow}</p>
-            <p>following: {currentUserData.following}</p>
-            <p>followers: {currentUserData.followers}</p>
+          <div className="col-9 d-flex align-items-center">
+            <div className="col-4 d-flex">
+              <div className="mx-1">
+                <FontAwesomeIcon
+                  icon={faNoteSticky}
+                  style={{ color: "#010630" }}
+                />
+              </div>
+              貼文:
+              <div className="p-item">{pageUserData.post}</div>
+            </div>
+            <div className="col-4 d-flex">
+              <div className="mx-1">
+                <FontAwesomeIcon
+                  icon={faFaceSmile}
+                  style={{ color: "#010630" }}
+                />
+              </div>
+              粉絲:
+              <div className="p-item"> {pageUserData.fans}</div>
+            </div>
+            <div className="col-4 d-flex">
+              <div className="mx-1">
+                <FontAwesomeIcon
+                  icon={faGlasses}
+                  style={{ color: "#010630" }}
+                />
+              </div>
+              追蹤:
+              <div className="p-item"> {pageUserData.follow}</div>
+            </div>
           </div>
+          <div className="row mt-3">
+            <div>{pageUserData.username}</div>
+            <br />
+            <div className="row">
+              <p className="mail mt-3">{pageUserData.email}</p>
+              <p className="description">{pageUserData.description}</p>
+            </div>
+          </div>
+          <div className="container d-flex align-items-center justify-content-center">
+            {!isFollowing && (
+              <button
+                onClick={() => follow()}
+                type="button"
+                className="col-10 w-90 btn btn-light ms-2"
+              >
+                追蹤
+              </button>
+            )}
+            {isFollowing && (
+              <button
+                onClick={() => follow()}
+                type="button"
+                className="col-10 w-90 btn btn-light ms-2"
+              >
+                取消追蹤
+              </button>
+            )}
+          </div>
+          {currentUser && (
+            <PostCardComponent
+              currentUser={pageUserData}
+              serCurrentUser={setPageUserData}
+            />
+          )}
         </div>
       ) : (
         <div>Loading...</div>

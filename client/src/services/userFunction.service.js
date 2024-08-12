@@ -2,6 +2,18 @@ import axios from "axios";
 const API_URL = "http://localhost:5050/api/UserFunc";
 
 class userFunctionService {
+  getUserFromId(_id) {
+    let token;
+    if (localStorage.getItem("user")) {
+      token = JSON.parse(localStorage.getItem("user")).token;
+    } else {
+      token = "";
+    }
+    return axios.get(`${API_URL}/${_id}`, {
+      headers: { Authorization: token },
+    });
+  }
+
   getCurrentUser() {
     let token;
     if (localStorage.getItem("user")) {

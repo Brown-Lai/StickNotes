@@ -29,7 +29,8 @@ const EditPost = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
+      <br />
       <h1>編輯貼文</h1>
       <div className="form-group">
         <label htmlFor="exampleforContent">內容：</label>
